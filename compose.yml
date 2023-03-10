@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  console:
+    image: twistlock/private:console_22_12_427
+    environment:
+      - LOG_PROD=false
+      - DATA_RECOVERY_ENABLED=true
+      - COMMUNICATION_PORT=8084
+      - MANAGEMENT_PORT_HTTPS=8083
+      - MANAGEMENT_PORT_HTTP=""
+      - CONFIG_PATH=/twistlock.cfg
+      - DISABLE_LIMITS=false
+    read_only: true
+    restart: always
+    ports:
+      - 8083:8083
+      - 8084:8084
+    volumes:
+      - console_data:/var/lib/twistlock
+      - console_backup:/var/lib/twistlock-backup
+    configs:
+      - twistlock.cfg
+      
+
+volumes:
+  console_data:
+  console_backup:
+
+configs:
+  twistlock.cfg:
+    file: ./config/twistlock.cfg
